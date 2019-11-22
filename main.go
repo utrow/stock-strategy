@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	"github.com/utrow/stock-storategy/interfaces"
-	"github.com/utrow/stock-storategy/models"
-	"github.com/utrow/stock-storategy/services"
-	"github.com/utrow/stock-storategy/strategys"
+	"github.com/utrow/stock-strategy/interfaces"
+	"github.com/utrow/stock-strategy/models"
+	"github.com/utrow/stock-strategy/services"
+	"github.com/utrow/stock-strategy/strategys"
 )
 
 func main() {

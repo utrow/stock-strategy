@@ -2,7 +2,7 @@ package strategys
 
 import (
 	"fmt"
-	"github.com/utrow/stock-storategy/models"
+	"github.com/utrow/stock-strategy/models"
 )
 
 type Reserve struct {
