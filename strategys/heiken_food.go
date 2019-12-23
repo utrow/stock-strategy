@@ -30,16 +30,18 @@ func (r *HeikenFood) TryPrevChanged(h []models.History) {
 	fmt.Println("Date\tClose\tTrend\tHold\tProfit")
 
 	for i := 0; i < len(histories); i++ {
-		if i < 3 {
+		if i < 4 {
 			continue
 		}
 
 		current := h[i]
 		prevHeiken := histories[i-2]
 		prev2Heiken := histories[i-3]
+		prev3Heiken := histories[i-4]
 
 		isPrevUpTrend := prevHeiken.Open < prevHeiken.Close
 		isPrev2UpTrend := prev2Heiken.Open < prev2Heiken.Close
+		isPrev3UpTrend := prev3Heiken.Open < prev3Heiken.Close
 
 		var displayTrend string
 		if isPrevUpTrend {
@@ -48,7 +50,7 @@ func (r *HeikenFood) TryPrevChanged(h []models.History) {
 			displayTrend = "🟥"
 		}
 
-		if r.stockSize == 0 && isPrevUpTrend && !isPrev2UpTrend {
+		if r.stockSize == 0 && isPrevUpTrend && !isPrev2UpTrend && !isPrev3UpTrend {
 			r.orderBuy(100, current.Open)
 		} else if r.stockSize > 0 && !isPrevUpTrend && isPrev2UpTrend {
 			r.orderSellAll(current.Open)
