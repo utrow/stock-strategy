@@ -22,7 +22,7 @@ type HeikenFood struct {
 	stockSize           int
 }
 
-func (r *HeikenFood) TryStrategy(h []models.History) {
+func (r *HeikenFood) TryPrevChanged(h []models.History) {
 	r.setHeikenFoodHistory(h)
 
 	histories := r.heikenFoodHistories
@@ -52,6 +52,51 @@ func (r *HeikenFood) TryStrategy(h []models.History) {
 			r.orderBuy(100, current.Open)
 		} else if r.stockSize > 0 && !isPrevUpTrend && isPrev2UpTrend {
 			r.orderSellAll(current.Open)
+		}
+
+		fmt.Println(
+			current.Date.Format("2006-01-02"),
+			current.Close,
+			displayTrend,
+			r.getStockProfit(current.Close),
+			r.profitTotal,
+		)
+	}
+
+	r.printResult()
+}
+
+func (r *HeikenFood) TryCurrentChanged(h []models.History) {
+	r.setHeikenFoodHistory(h)
+
+	histories := r.heikenFoodHistories
+
+	fmt.Println("Date\tClose\tTrend\tHold\tProfit")
+
+	for i := 0; i < len(histories); i++ {
+		if i < 2 {
+			continue
+		}
+
+		current := h[i]
+		prevHeiken := histories[i-2]
+		currentHeikenClose := (current.Open + current.High + current.Low + current.Close) / 4
+		currentHeikenOpen := (prevHeiken.Open + prevHeiken.Close) / 2
+
+		isPrevUpTrend := prevHeiken.Open < prevHeiken.Close
+		isChangeUpTrend := currentHeikenOpen < currentHeikenClose
+
+		var displayTrend string
+		if isPrevUpTrend {
+			displayTrend = "🟩"
+		} else {
+			displayTrend = "🟥"
+		}
+
+		if r.stockSize == 0 && isPrevUpTrend && isChangeUpTrend {
+			r.orderBuy(100, current.Close)
+		} else if r.stockSize > 0 && !isPrevUpTrend && !isChangeUpTrend {
+			r.orderSellAll(current.Close)
 		}
 
 		fmt.Println(
