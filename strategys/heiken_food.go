@@ -35,16 +35,18 @@ func (r *HeikenFood) TryPrevChanged(h []models.History) {
 		}
 
 		current := h[i]
+		currentHeiken := histories[i-1]
 		prevHeiken := histories[i-2]
 		prev2Heiken := histories[i-3]
 		prev3Heiken := histories[i-4]
 
+		isCurrentUpTrend := currentHeiken.Open < currentHeiken.Close
 		isPrevUpTrend := prevHeiken.Open < prevHeiken.Close
 		isPrev2UpTrend := prev2Heiken.Open < prev2Heiken.Close
 		isPrev3UpTrend := prev3Heiken.Open < prev3Heiken.Close
 
 		var displayTrend string
-		if isPrevUpTrend {
+		if isCurrentUpTrend {
 			displayTrend = "🟩"
 		} else {
 			displayTrend = "🟥"
