@@ -17,6 +17,11 @@ type heikenFoodRow struct {
 
 type HeikenFood struct {
 	heikenFoodHistories []heikenFoodRow
+	maxAmount           int
+	maxProfit           int
+	maxLoss             int
+	tradeCount          int
+	tradeWinCount       int
 	profitTotal         int
 	stockGettingPrice   int
 	stockSize           int
@@ -150,6 +155,12 @@ func (r *HeikenFood) setHeikenFoodHistory(h []models.History) {
 
 func (r *HeikenFood) orderBuy(size int, price int) {
 	fmt.Println("Buy:", price)
+
+	amount := price * size
+	if r.maxAmount < amount {
+		r.maxAmount = amount
+	}
+
 	r.stockGettingPrice = price
 	r.stockSize = size
 }
@@ -157,7 +168,20 @@ func (r *HeikenFood) orderBuy(size int, price int) {
 func (r *HeikenFood) orderSellAll(price int) {
 	fmt.Println("Sell:", price, "("+strconv.Itoa(price-r.stockGettingPrice)+")")
 
-	r.profitTotal += r.getStockProfit(price)
+	profit := r.getStockProfit(price)
+	r.profitTotal += profit
+
+	if profit > 0 {
+		r.tradeWinCount += 1
+		if r.maxProfit < profit {
+			r.maxProfit = profit
+		}
+	} else {
+		if r.maxLoss > profit {
+			r.maxLoss = profit
+		}
+	}
+	r.tradeCount += 1
 
 	r.stockGettingPrice = 0
 	r.stockSize = 0
@@ -168,6 +192,11 @@ func (r *HeikenFood) getStockProfit(price int) int {
 }
 
 func (r *HeikenFood) printResult() {
+	perWin := fmt.Sprintf("%f%%", float32(r.tradeWinCount)/float32(r.tradeCount)*100)
+
 	fmt.Println("----------------------------------------")
-	fmt.Println("Profit:", 0, "(", 0, ")")
+	fmt.Println("Max Amount:", r.maxAmount)
+	fmt.Println("Trade Count:", r.tradeCount, "( win:", r.tradeWinCount, perWin, ")")
+	fmt.Println("Max Profit:", r.maxProfit, "Max Loss:", r.maxLoss)
+	fmt.Println("Profit:", r.profitTotal, "(", r.tradeWinCount, r.tradeCount, ")")
 }
