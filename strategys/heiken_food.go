@@ -196,7 +196,7 @@ func (r *HeikenFood) printResult() {
 
 	fmt.Println("----------------------------------------")
 	fmt.Println("Max Amount:", r.maxAmount)
-	fmt.Println("Trade Count:", r.tradeCount, "( win:", r.tradeWinCount, perWin, ")")
+	fmt.Println("Trade Count:", r.tradeCount, "/ win:", r.tradeWinCount, "(", perWin, ")")
 	fmt.Println("Max Profit:", r.maxProfit, "Max Loss:", r.maxLoss)
 	fmt.Println("Profit:", r.profitTotal, "(", r.tradeWinCount, r.tradeCount, ")")
 }
