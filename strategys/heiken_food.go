@@ -193,10 +193,11 @@ func (r *HeikenFood) getStockProfit(price int) int {
 
 func (r *HeikenFood) printResult() {
 	perWin := fmt.Sprintf("%f%%", float32(r.tradeWinCount)/float32(r.tradeCount)*100)
+	perProfit := fmt.Sprintf("%f%%", float32(r.profitTotal)/float32(r.maxAmount)*100)
 
 	fmt.Println("----------------------------------------")
 	fmt.Println("Max Amount:", r.maxAmount)
 	fmt.Println("Trade Count:", r.tradeCount, "/ win:", r.tradeWinCount, "(", perWin, ")")
 	fmt.Println("Max Profit:", r.maxProfit, "Max Loss:", r.maxLoss)
-	fmt.Println("Profit:", r.profitTotal, "(", r.tradeWinCount, r.tradeCount, ")")
+	fmt.Println("Profit:", r.profitTotal, "(", perProfit, ")")
 }
