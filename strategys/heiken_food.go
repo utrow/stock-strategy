@@ -75,6 +75,54 @@ func (r *HeikenFood) TryPrevChanged(h []models.History) {
 	r.printResult()
 }
 
+func (r *HeikenFood) TryPrevChangedCloseBreak(h []models.History) {
+	r.setHeikenFoodHistory(h)
+
+	histories := r.heikenFoodHistories
+
+	fmt.Println("Date\tClose\tTrend\tHold\tProfit")
+
+	for i := 0; i < len(histories); i++ {
+		if i < 4 {
+			continue
+		}
+
+		current := h[i]
+		currentHeiken := histories[i-1]
+		prevHeiken := histories[i-2]
+		prev2Heiken := histories[i-3]
+		prev3Heiken := histories[i-4]
+
+		isCurrentUpTrend := currentHeiken.Open < currentHeiken.Close
+		isPrevUpClose := prev2Heiken.Close < prevHeiken.Close
+		isPrev2UpTrend := prev2Heiken.Open < prev2Heiken.Close
+		isPrev3UpTrend := prev3Heiken.Open < prev3Heiken.Close
+
+		var displayTrend string
+		if isCurrentUpTrend {
+			displayTrend = "🟩"
+		} else {
+			displayTrend = "🟥"
+		}
+
+		if r.stockSize == 0 && isPrevUpClose && !isPrev2UpTrend && !isPrev3UpTrend {
+			r.orderBuy(100, current.Open)
+		} else if r.stockSize > 0 && !isPrevUpClose {
+			r.orderSellAll(current.Open)
+		}
+
+		fmt.Println(
+			current.Date.Format("2006-01-02"),
+			current.Close,
+			displayTrend,
+			r.getStockProfit(current.Close),
+			r.profitTotal,
+		)
+	}
+
+	r.printResult()
+}
+
 func (r *HeikenFood) TryCurrentChanged(h []models.History) {
 	r.setHeikenFoodHistory(h)
 

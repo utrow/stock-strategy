@@ -27,5 +27,5 @@ func main() {
 
 	histories := models.HistoryFactory(rawHistories)
 
-	strategy.HeikenFood.TryPrevChanged(histories)
+	strategy.HeikenFood.TryPrevChangedCloseBreak(histories)
 }
