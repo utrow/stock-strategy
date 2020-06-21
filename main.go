@@ -27,5 +27,5 @@ func main() {
 
 	histories := models.HistoryFactory(rawHistories)
 
-	strategy.StockChange.TryStrategy3(histories)
+	strategy.Weeks.TryStrategy1(histories)
 }

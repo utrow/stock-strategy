@@ -5,6 +5,7 @@ type Strategy struct {
 	HeikenFood     HeikenFood
 	HeikenSmoothed HeikenSmoothed
 	StockChange    StockChange
+	Weeks          Weeks
 }
 
 func MakeStrategy() Strategy {
