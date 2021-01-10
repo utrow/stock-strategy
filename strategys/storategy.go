@@ -6,6 +6,7 @@ type Strategy struct {
 	HeikenSmoothed HeikenSmoothed
 	StockChange    StockChange
 	Weeks          Weeks
+	Nampin         Nampin
 }
 
 func MakeStrategy() Strategy {

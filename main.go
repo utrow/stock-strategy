@@ -27,5 +27,5 @@ func main() {
 
 	histories := models.HistoryFactory(rawHistories)
 
-	strategy.Weeks.TryStrategy1(histories)
+	strategy.Nampin.TryStrategy1(histories)
 }
